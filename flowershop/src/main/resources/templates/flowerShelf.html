@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+    <main>
+        <section class="row">
+            <h5 th:if="${emptyList}">
+                <span class="helper-text red-text lighten-3">oops, no result is found. try something else or try again later.</span>
+            </h5>
+            <h1>
+                <span th:text="${user}? ${#strings.toUpperCase(user.username)}"></span>
+            </h1>
+            <div class="col s3">
+                <ul class="collection" id="category">
+                    <li class="collection-item">
+                        <a class="list-cell" th:classappend="${activeAll}? 'active'"
+                           th:href="@{/flowerShelf(category='all')}">
+                            All
+                        </a>
+                    </li>
+                    <li class="collection-item">
+                        <a class="list-cell" th:classappend="${activeBouquet}? 'active'"
+                           th:href="@{/searchByCategory(category='bouquet')}">
+                            bouquet
+                        </a>
+                    </li>
+                    <li class="collection-item">
+                        <a class="list-cell" th:classappend="${activeBasket}? 'active'"
+                           th:href="@{/searchByCategory(category='basket')}">
+                            basket
+                        </a>
+                    </li>
+                    <li class="collection-item">
+                        <a class="list-cell" th:classappend="${activeBox}? 'active'"
+                           th:href="@{/searchByCategory(category='box')}">
+                            box
+                        </a>
+                    </li>
+                </ul>
+                <label for="category">category</label>
+            </div>
+            <div class="col s9">
+                <table border="0" id="flowerList" class="col s9">
+                    <thead>
+                        <tr>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="col s6" data-th-each="flower : ${flowerList}">
+                            <td>
+                                <div th:if="${flower != null}">
+                                    <div class="row">
+                                        <div>
+                                            <a th:href="@{/flowerDetail?id=}+${flower.id}">
+                                                <img alt="productImage"
+                                                     class="responsive-img shelf-flower"
+                                                     id="productImage"
+                                                     th:src="#{adminPath}+@{/img/flower/}+${flower.id}+'.jpeg'">
+                                            </a>
+                                            <a th:href="@{/flowerDetail?id=}+${flower.id}">
+                                                <h4 th:text="${flower.title}"></h4>
+                                            </a>
+                                            <hr>
+                                            <p th:inline="text">
+                                                category:
+                                                <span th:text="${flower.category}"></span>
+                                            </p>
+                                            <p th:inline="text">
+                                                size:
+                                                <span th:text="${flower.size}"></span>
+                                            </p>
+                                            <p th:inline="text">
+                                                weight:
+                                                <span th:text="${flower.shippingWeight}"></span>
+                                                ounces
+                                            </p>
+                                            <p th:inline="text">
+                                                list price:
+                                                $
+                                                <span class="helper-text"
+                                                      style="text-decoration: line-through;"
+                                                      th:text="${#numbers.formatDecimal(flower.listPrice, 0, 'COMMA', 2, 'POINT')}"></span>
+                                            </p>
+                                            <p th:inline="text">
+                                                our price:
+                                                $
+                                                <span class="helper-text"
+                                                      th:text="${#numbers.formatDecimal(flower.ourPrice, 0, 'COMMA', 2, 'POINT')}"></span>
+                                            </p>
+                                            <p th:inline="text">
+                                                description:
+                                                <span th:utext="${#strings.abbreviate(flower.description, 500)}"></span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <th:block th:include="/fragments/_footer"/>
+    </body>
+</html>

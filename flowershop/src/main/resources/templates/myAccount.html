@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+    <main class="container">
+        <section class="row">
+            <h1>
+                your account
+            </h1>
+            <hr>
+        </section>
+        <!-- edit user information -->
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s4">
+                        <a href="#createNewUser" th:classappend="${classActiveNewAccount}? 'in active'">create
+                            account</a>
+                    </li>
+                    <li class="tab col s4">
+                        <a href="#logIn" th:classappend="${classActiveLogin}? 'in active'">
+                            sign in</a>
+                    </li>
+                    <li class="tab col s4">
+                        <a href="#forgot" th:classappend="${classActiveForgotPassword}? 'in ative'">forgot
+                            password</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- create new user -->
+            <p class="red-text text-darken-3" th:if="${emailSent}">
+                an email has been sent to the email address that you registered with! please validate your email
+                address and password information
+            </p>
+            <form th:action="@{/newUser}" method="post">
+                <div id="createNewUser">
+                    <div class="input-field col s12">
+                        <span class="helper-text" style="color: red;" th:if="${usernameExists}">Username already exists. Choose a different one.</span>
+                        <input required id="username" name="username" type="text" class="validate">
+                        <label for="username">user name</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <span class="helper-text" style="color: red;" th:if="${emailExists}">Email already exists. Choose a different one.</span>
+                        <input id="email" type="email" name="email" class="validate">
+                        <label for="email">email</label>
+                    </div>
+                    <button class="waves-effect waves-light btn right blue lighten-2" th:type="submit">create new
+                        account
+                    </button>
+                </div>
+            </form>
+            <!-- log in -->
+            <form th:action="@{/login}" method="post">
+                <div id="logIn">
+                    <div class="input-field col s12">
+                        <span class="helper-text" style="color: red;" th:if="${param.error != null}">incorrect username or password</span>
+                        <input id="userNameLogIn" type="text" class="validate" name="username" required>
+                        <label for="userNameLogIn">user name</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="password" type="password" class="validate" name="password">
+                        <label for="password">password</label>
+                    </div>
+                    <button class="waves-effect waves-light btn right blue lighten-2" th:type="submit">log in
+                    </button>
+                </div>
+            </form>
+            <!-- forgot password -->
+            <form th:action="@{/forgotPassword}" method="post">
+                <div id="forgot">
+                    <div class="input-field col s12">
+                        <span class="helper-text" style="color: red;" th:if="${emailNotExist}">email doesn't exist, are you sure that's the correct address?</span>
+                        <span class="helper-text" style="color: #acf3ff;" th:if="${forgotPasswordEmailSent}">recovery email sent!</span>
+                        <input id="recoverEmail" type="email" class="validate" name="email">
+                        <label for="recoverEmail">email</label>
+                    </div>
+                    <button class="waves-effect waves-light btn right blue lighten-2" th:type="submit">send recovery
+                        email
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- order user information -->
+    </main>
+    
+    <th:block th:include="/fragments/_footer"/>
+    </body>
+</html>

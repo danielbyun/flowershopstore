@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <head th:fragment="common-header">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <title>liz's flower shop</title>
+        
+        <!-- CSS  -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link th:href="@{/css/materialize.min.css}" href="/static/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link th:href="@{/css/style.css}" href="/static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        
+        <link rel="icon" href="../../static/img/icon/bouquet.png" th:href="@{/img/icon/bouquet.png}">
+        
+        <!-- data table -->
+        <link th:href="@{/css/jquery.dataTables.min.css}" rel="stylesheet"/>
+        <link th:href="@{/css/dataTables.bootstrap.min.css}" rel="stylesheet"/>
+        
+    </head>
+    <body>
+        <nav class="light-blue lighten-3" role="navigation" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" th:fragment="navbar">
+            <div class="nav-wrapper container">
+                <a id="logo-container" th:href="@{/}" class="brand-logo">
+                    admin portal home
+                </a>
+                <ul class="right hide-on-med-and-down">
+                    <li>
+                        <a class="dropdown-trigger" href="#!" data-target="dropdown1">menu<i class="material-icons right">arrow_drop_down</i></a>
+                    </li>
+                </ul>
+                <ul id="dropdown1" class="dropdown-content hide-on-med-and-down">
+                    <li class="white lighten-4">
+                        <a th:href="@{/flower/add}" class="grey-text text-darken-3">Add a new product</a>
+                    </li>
+                    <li class="white lighten-4">
+                        <a th:href="@{/flower/flowerList}" class="grey-text text-darken-3">View inventory</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li class="white lighten-4" th:if="*{#request.userPrincipal != null}">
+                        <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="grey-text text-darken-3">logout</a>
+                    </li>
+                </ul>
+                <ul id="nav-mobile" class="sidenav">
+                    <li>
+                        <a th:href="@{/flower/add}">Add a new product</a>
+                        <a th:href="@{/flower/flowerList}">View inventory</a>
+                        <a th:if="*{#request.userPrincipal != null}" th:href="@{/logout}">logoutz</a>
+                    </li>
+                </ul>
+                <a href="#" data-target="nav-mobile" class="sidenav-trigger">
+                    <i class="material-icons">
+                        menu
+                    </i>
+                </a>
+            </div>
+        </nav>
+        <div class="section no-pad-bot" id="index-banner" style="padding-top: 0;" th:fragment="carousel">
+            <div>
+                <div class="carousel carousel-slider center">
+                    <div id="header-carousel1" class="carousel-item white-text" href="#one!">
+                        <h2>some intro text</h2>
+                        <p class="white-text">some intro thangs</p>
+                    </div>
+                    <div id="header-carousel2" class="carousel-item white-text" href="#two!">
+                        <h2>who uses carousel honestly</h2>
+                        <p class="white-text">well like who puts texts inside carousel</p>
+                    </div>
+                </div>
+            
+            </div>

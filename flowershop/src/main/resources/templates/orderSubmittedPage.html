@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+    <main class="container">
+        <section class="row">
+            <h1>
+                your account
+            </h1>
+            <hr>
+        </section>
+        <div class="row">
+            <div class="col s12">
+                <div class="green white-text text-lighten-3 lighten-3 helper-text">
+                    <h3><i class="material-icons">check</i> thank you, your order has been placed</h3>
+                    <h4 class="center">the estimated delivery date is <span th:text="${estimatedDeliveryDate}"></span></h4>
+                </div>
+                <h3>list of items</h3>
+                <div class="row" th:each="cartItem : ${cartItemList}">
+                    <hr>
+                    <div class="col s2"></div>
+                    <div class="col s2">
+                        <a th:href="@{/flowerDetail(id=${cartItem.flower.id})}">
+                            <img th:src="#{adminPath}+@{/img/flower/}+${cartItem.flower.id}+'.jpeg'" alt="product image" class="responsive-img" style="width: 100%;">
+                        </a>
+                    </div>
+                    <div class="col s6">
+                        <div>
+                            <a th:href="@{/flowerDetail?id=}+${cartItem.flower.id}">
+                                <h4 th:text="${cartItem.flower.title}"></h4>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col s2">
+                        <h5>
+                            $<span th:text="${cartItem.flower.ourPrice}"
+                                   th:style="${cartItem.flower.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <th:block th:include="/fragments/_footer"/>
+    </body>
+</html>

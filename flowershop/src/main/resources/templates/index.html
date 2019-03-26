@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+    <div class="container">
+        <div class="section">
+            <!--   Icon Section   -->
+            <div class="row">
+                <div class="col s12 m4">
+                    <div class="icon-block" th:if="${#request.userPrincipal == null}">
+                        <a th:href="@{/login}">
+                            <h2 class="center light-blue-text"><i class="material-icons">accessibility</i></h2>
+                            <h5 class="center">login</h5>
+                        </a>
+                        
+                        <img th:src="@{/img/7.jpeg}" src="/static/img/6.jpeg" alt="books" style="width:100%; height: 100%;">
+                    </div>
+                    <div class="icon-block" th:if="${#request.userPrincipal != null}">
+                        <a th:href="@{/logout}">
+                            <h2 class="center light-blue-text"><i class="material-icons">accessibility</i></h2>
+                            <h5 class="center">logout</h5>
+                        </a>
+        
+                        <img th:src="@{/img/7.jpeg}" src="/static/img/6.jpeg" alt="books" style="width:100%; height: 100%;">
+                    </div>
+                </div>
+                
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <a th:href="@{/flowerShelf}">
+                            <h2 class="center light-blue-text"><i class="material-icons">spa</i></h2>
+                            <h5 class="center">flower shelf</h5>
+                        </a>
+                        <img th:src="@{/img/11.jpeg}" src="/static/img/7.jpeg" alt="books with coffee" style="width:100%; height: 100%;">
+                    </div>
+                </div>
+                
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
+                        <h5 class="center">example #3</h5>
+                        
+                        <img th:src="@{/img/10.jpeg}" src="/static/img/8.jpeg" alt="bookstore" style="width: 100%; height: 100%;">
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+        <br><br>
+    </div>
+    <div>
+        <div class="section">
+            <div class="carousel carousel-slider">
+                <a class="carousel-item" href="#one!">
+                    <img th:src="@{img/5.jpeg}" src="/static/img/5.jpeg" class="responsive-img" style="background-size: cover; background: no-repeat center center fixed">
+                </a>
+                <a class="carousel-item" href="#two!">
+                    <img th:src="@{img/2.jpeg}" src="/static/img/2.jpeg" class="responsive-img">
+                </a>
+                <a class="carousel-item" href="#three!">
+                    <img th:src="@{img/3.jpeg}" src="/static/img/3.jpeg" class="responsive-img">
+                </a>
+                <a class="carousel-item" href="#four!">
+                    <img th:src="@{img/12.jpeg}" src="/static/img/4.jpeg" class="responsive-img" style="background-size: cover; background: no-repeat center center fixed">
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <th:block th:include="/fragments/_footer"/>
+    
+    </body>
+</html>

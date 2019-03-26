@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+    
+    <main class="container">
+        <h3>
+            sign in
+        </h3>
+        <form th:action="@{/login}" method="post">
+            <div id="logIn" class="row">
+                <div class="input-field col s12">
+                    <span class="helper-text" style="color: red;" th:if="${param.error != null}">incorrect username or password</span>
+                    <span class="helper-text" style="color: red;" th:if="${param.logout}">you have been logged out</span>
+                    <input id="userNameLogIn" type="text" class="validate" name="username">
+                    <label for="userNameLogIn">user name</label>
+                </div>
+                <div class="input-field col s12">
+                    <input id="password" type="password" class="validate" name="password">
+                    <label for="password">password</label>
+                </div>
+                <button class="waves-effect waves-light btn right blue lighten-2" th:type="submit">log in
+                </button>
+            </div>
+        </form>
+    
+    </main>
+    <th:block th:include="/fragments/_footer"/>
+    
+    </body>
+</html>

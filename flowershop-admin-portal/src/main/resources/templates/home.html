@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+    
+    <main class="container">
+        <div class="row col s12">
+            <div class="col s6">
+                <div class="icon-block">
+                    <a th:href="@{/flower/add}">
+                        <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+                        <h5 class="center">add a flower</h5>
+                    </a>
+                    
+                    <img th:src="@{/img/7.jpeg}" src="/static/img/6.jpeg" alt="books" style="width:100%; height: 100%;">
+                </div>
+            </div>
+            
+            <div class="col s6">
+                <div class="icon-block">
+                    <a th:href="@{/flower/flowerList}">
+                        <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+                        <h5 class="center">flower inventory</h5>
+                    </a>
+                    
+                    <img th:src="@{/img/11.jpeg}" src="/static/img/7.jpeg" alt="books with coffee" style="width:100%; height: 100%;">
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <th:block th:include="/fragments/_footer"/>
+    
+    </body>
+</html>

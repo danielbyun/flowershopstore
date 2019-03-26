@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+    
+    <!-- serve rich text content in textarea -->
+    <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=96zktdao47ifzrut517z3mcgr487nfm8zhpipb8d9gddik8k"></script>
+    <script>tinymce.init({selector: 'textarea'});</script>
+    
+    <div class="container">
+        
+        <div class="row">
+            <form class="col s12" method="post" th:action="@{/flower/updateFlower}" enctype="multipart/form-data">
+                <fieldset>
+                    <legend class="center-block">
+                        update flower information
+                    </legend>
+                    <span class="helper-text">* is a required field.</span>
+                    <!-- title -->
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="hidden" name="id" th:value="${flower.id}">
+                            <input id="title" type="text" class="validate" th:value="${flower.title}" required name="title">
+                            <label for="title">title</label>
+                            <span class="helper-text">Title of the product</span>
+                        </div>
+                    </div>
+                    <!-- item number -->
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="item_number" type="text" class="validate" th:value="${flower.itemNumber}" required name="itemNumber">
+                            <label for="item_number">Item number</label>
+                            <span class="helper-text">Item number</span>
+                        </div>
+                    </div>
+                    <!-- size -->
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select id="sizeSelect" th:value="${flower.size}" name="size">
+                                <option value="" disabled selected>Choose the size</option>
+                                <option th:selected="(${flower.size == 'S'})" value="S">S</option>
+                                <option th:selected="(${flower.size == 'M'})" value="M">M</option>
+                                <option th:selected="(${flower.size == 'L'})" value="L">L</option>
+                            </select>
+                            <label for="sizeSelect">size select</label>
+                        </div>
+                    </div>
+                    <!-- category -->
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select id="categorySelect" th:value="${flower.category}" name="category">
+                                <option value="" disabled selected>Choose the category</option>
+                                <option value="bouquet" th:selected="(${flower.category == 'bouquet'})">bouquet
+                                </option>
+                                <option value="box" th:selected="(${flower.category == 'box'})">box</option>
+                                <option value="basket" th:selected="(${flower.category == 'basket'})">basket
+                                </option>
+                            </select>
+                            <label for="categorySelect">category select</label>
+                        </div>
+                    </div>
+                    <!-- shipping weight -->
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="shipping_weight" type="text" class="validate" th:value="${flower.shippingWeight}" required name="shippingWeight" step="0.01">
+                            <label for="shipping_weight">shipping weight (in pounds)</label>
+                            <span class="helper-text">this will determine the shipping price</span>
+                        </div>
+                    </div>
+                    <!-- in_stock_number -->
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="in_stock_number" type="text" class="validate" th:value="${flower.inStockNumber}" required name="inStockNumber">
+                            <label for="in_stock_number">number in stock</label>
+                            <span class="helper-text">how many in stock?</span>
+                        </div>
+                    </div>
+                    <!-- list_price -->
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="list_price" type="text" class="validate" th:value="${flower.listPrice}" required name="listPrice" step="0.01">
+                            <label for="list_price">list price (in dollars)</label>
+                        </div>
+                    </div>
+                    <!-- our price -->
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="our_price" type="text" class="validate" th:value="${flower.ourPrice}" required name="ourPrice" step="0.01">
+                            <label for="our_price">our price (in dollars)</label>
+                        </div>
+                    </div>
+                    <!-- status of flower -->
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <span class="helper-text">status of product</span>
+                            <p>
+                                <label for="active">
+                                    <input id="active" type="radio" class="validate" th:checked="${flower.active}" th:value="${flower.active == true}" required name="active"><span>available</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label for="active1">
+                                    <input id="active1" type="radio" class="validate" th:checked="${!flower.active}" th:value="${flower.active == false}" required name="active"><span>not available</span>
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- description -->
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="description" class="materialize-textarea" rows="5" name="description" th:value="${flower.description}" th:text="${flower.description}"></textarea>
+                            <label for="description">description</label>
+                        </div>
+                    </div>
+                    <!-- file upload -->
+                    <div class="file-field input-field">
+                        <div class="btn light-blue lighten-3">
+                            <span>File</span>
+                            <input type="file" multiple name="flowerImage" th:value="${flower.flowerImage}">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <button class="light-blue lighten-3 btn waves-effect waves-light" type="submit" name="action">
+                            Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                        <a th:href="@{/flower/flowerInfo(id=${flower.id})}" class="red lighten-3 btn waves-effect waves-light">cancel</a>
+                    </div>
+                </fieldset>
+            </form>
+        
+        </div>
+    
+    </div>
+    <th:block th:include="/fragments/_footer"/>
+    </body>
+</html>

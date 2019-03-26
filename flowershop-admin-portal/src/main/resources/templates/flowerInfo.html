@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+        
+        <main class="container">
+            <div class="row">
+                <!-- image -->
+                <div class="col s3">
+                    <img style="width: 100%;" th:src="@{/img/flower/}+${flower.id} + '.jpeg'" alt="flower image" class="responsive-img">
+                </div>
+                <div class="col s9">
+                    <h3 th:text="${flower.title}"></h3>
+                    <div class="row">
+                        <div class="col s6">
+                            <p th:inline="text">
+                                item number: <span th:text="${flower.itemNumber}"></span>
+                            </p>
+                            <p th:inline="text">
+                                title: <span th:text="${flower.title}"></span>
+                            </p>
+                            <p th:inline="text">
+                                category: <span th:text="${flower.category}"></span>
+                            </p>
+                            <p th:inline="text">
+                                size: <span th:text="${flower.size}"></span>
+                            </p>
+                        </div>
+                        <div class="col s6">
+                            <p th:inline="text">
+                                shipping weight: <span th:text="${flower.shippingWeight}"></span>
+                            </p>
+                            <p th:inline="text">
+                                active: <span th:text="${flower.active}"></span>
+                            </p>
+                            <p th:inline="text">
+                                in stock number: <span th:Text="${flower.inStockNumber}"></span>
+                            </p>
+                            <p th:inline="text">
+                                list price: $<span th:text="${flower.listPrice}"></span>
+                            </p>
+                            <p th:inline="text">
+                                our price: $<span th:text="${flower.ourPrice}"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <p th:inline="text">
+                        description: <span th:utext="${flower.description}"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="nav-wrapper">
+                <ol class="col s12">
+                    <li>
+                        <a class="breadcrumb black-text text-lighten-3" th:href="@{/flower/flowerList}">
+                            go back
+                        </a>
+                    </li>
+                    <li>
+                        <a class="breadcrumb black-text text-lighten-3" th:href="@{/flower/updateFlower(id=${flower.id})}">edit</a>
+                    </li>
+                </ol>
+            </div>
+        </main>
+        
+        <th:block th:include="/fragments/_footer"/>
+    
+    </body>
+</html>

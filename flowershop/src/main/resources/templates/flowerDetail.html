@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+    <main class="container">
+        <section class="row">
+            <h5 th:if="${emptyList}">
+                <span class="helper-text red-text lighten-3">oops, no result is found. try something else or try again later.</span>
+            </h5>
+            <h1>
+                <span th:text="${user}? ${#strings.toUpperCase(user.username)}"></span>
+            </h1>
+            <hr>
+            <form th:action="@{/shoppingCart/addItem}" method="post">
+                <input type="hidden" name="id" th:field="*{flower.id}">
+                <div class="row">
+                    <div class="col s3">
+                        <a th:href="@{/flowerShelf}">back to flower shelf</a>
+                        <img th:src="#{adminPath}+@{/img/flower/}+${flower.id}+'.jpeg'" alt="flower image" style="width: 100%;">
+                    </div>
+                    <div class="col s9">
+                        <div class="col s12">
+                            <h3 th:text="${flower.title}"></h3>
+                            <p th:inline="text">
+                                category: <span th:text="${flower.category}"></span>
+                            </p>
+                            <p th:inline="text">
+                                size: <span th:text="${flower.size}"></span>
+                            </p>
+                            <p th:inline="text">
+                                weight: <span th:text="${flower.shippingWeight}"></span>
+                                ounces
+                            </p>
+                            <p th:inline="text">
+                                description:
+                                <span th:utext="${#strings.abbreviate(flower.description, 500)}"></span>
+                            </p>
+                        </div>
+                        <div class="col s12">
+                            <div style="border-width: 5px;">
+                                <div>
+                                    <h4 th:inline="text">
+                                        our price: $<span th:text="${flower.ourPrice}"></span>
+                                    </h4>
+                                    <p th:inline="text">
+                                        list price: $<span th:text="${flower.listPrice}"></span>
+                                    </p>
+                                    <p>
+                                        you save:
+                                        $<span th:text="${#numbers.formatDecimal((flower.listPrice - flower.ourPrice), 0, 'COMMA', 2, 'POINT')}"></span>
+                                    </p>
+                                    <span>
+                                            quantity:
+                                            <select name="qty" id="qty" class="col s6">
+                                                <option th:each="quantity : ${quantityList}" th:value="${quantity}" th:text="${quantity}">
+                                                </option>
+                                            </select>
+                                        </span>
+                                </div>
+                                <div>
+                                    <h4 th:if="*{flower.inStockNumber&gt;10}" style="color: lightseagreen">In
+                                        Stock</h4>
+                                    <h4 th:inline="text">
+                                            <span th:if="*{flower.inStockNumber&lt;10 and flower.inStockNumber&gt;0}" style="color: mediumseagreen">
+                                                In stock, only
+                                                <span th:text="${flower.inStockNumber}"></span>
+                                                left!
+                                            </span>
+                                    </h4>
+                                    <h4 th:if="*{flower.inStockNumber == 0}" style="color: palevioletred">out of
+                                        stock</h4>
+                                    <button type="submit" class="waves-effect btn waves-light">
+                                        add to cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </main>
+    
+    <th:block th:include="/fragments/_footer"/>
+    </body>
+</html>

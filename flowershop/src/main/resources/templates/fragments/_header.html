@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:fragment="common-header">
+        <meta content="text/html; charset=UTF-8"
+              http-equiv="Content-Type"/>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1.0"
+              name="viewport"/>
+        <title>liz's flower shop</title>
+
+        <!-- CSS  -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet">
+        <link href="/static/css/materialize.min.css"
+              media="screen,projection"
+              rel="stylesheet"
+              th:href="@{/css/materialize.min.css}"
+              type="text/css"/>
+        <link href="/static/css/style.css"
+              media="screen,projection"
+              rel="stylesheet"
+              th:href="@{/css/style.css}"
+              type="text/css"/>
+
+        <link href="../../static/img/icon/bouquet.png"
+              rel="icon"
+              th:href="@{/img/icon/bouquet.png}">
+
+        <!-- jquery and scripts -->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    </head>
+    <body>
+        <!-- if i want to have a search input -->
+        <!--<form method="post" th:action="@{/searchFlower}">-->
+            <!--<input class="input-field" id="search" name="keyword" type="text">-->
+            <!--<label for="search">search</label>-->
+            <!--<a class="btn waves-effect waves-light" type="submit">search</a>-->
+        <!--</form>-->
+        <nav class="pink lighten-4"
+             role="navigation"
+             th:fragment="navbar">
+            <div class="nav-wrapper container">
+                <a class="brand-logo"
+                   id="logo-container"
+                   th:href="@{/}">
+                    liz's flowershop
+                </a>
+                <ul class="right hide-on-med-and-down">
+                    <li>
+                        <a class="dropdown-trigger"
+                           data-target="dropdown1"
+                           href="#!">menu
+                            <i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="dropdown-content hide-on-med-and-down"
+                    id="dropdown1">
+                    <li class="white lighten-4">
+                        <a class="grey-text text-darken-3"
+                           th:href="@{/flowerShelf}">flower stand
+                        </a>
+                    </li>
+                    <li class="white lighten-4"
+                        th:if="*{#request.userPrincipal != null}">
+                        <a class="grey-text text-darken-3"
+                           sec:authorize="isAuthenticated()"
+                           th:href="@{/shoppingCart/cart}">shopping
+                            cart
+                        </a>
+                    </li>
+                    <li class="white lighten-4"
+                        th:if="*{#request.userPrincipal == null}">
+                        <a class="grey-text text-darken-3"
+                           sec:authorize="isAnonymous()"
+                           th:href="@{/login}">my
+                            account
+                        </a>
+                    </li>
+                    <li class="white lighten-4"
+                        th:if="*{#request.userPrincipal != null}">
+                        <a class="grey-text text-darken-3"
+                           sec:authorize="isAuthenticated()"
+                           th:href="@{/myProfile}">
+                            my account
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li class="white lighten-4"
+                        th:if="*{#request.userPrincipal != null}">
+                        <a class="grey-text text-darken-3"
+                           sec:authorize="isAuthenticated()"
+                           th:href="@{/logout}">logout
+                        </a>
+                    </li>
+                </ul>
+                <ul class="sidenav"
+                    id="nav-mobile">
+                    <li>
+                        <a th:href="@{/flowerShelf}">flower stand</a>
+                        <a th:href="@{/shoppingCart/cart}">shopping cart</a>
+                        <a sec:authorize="isAnonymous()"
+                           th:href="@{/login}"
+                           th:if="*{#request.userPrincipal == null}">
+                            my account
+                        </a>
+                        <a sec:authorize="isAuthenticated"
+                           th:href="@{/myProfile}"
+                           th:if="*{#request.userPrincipal != null}">my
+                            account
+                        </a>
+                        <a th:href="@{/logout}"
+                           th:if="*{#request.userPrincipal != null}">logoutz
+                        </a>
+                    </li>
+                </ul>
+                <a class="sidenav-trigger"
+                   data-target="nav-mobile"
+                   href="#">
+                    <i class="material-icons">
+                        menu
+                    </i>
+                </a>
+            </div>
+        </nav>
+        <div class="section no-pad-bot"
+             id="index-banner"
+             style="padding-top: 0;"
+             th:fragment="carousel">
+            <div>
+                <div class="carousel carousel-slider center">
+                    <div class="carousel-item white-text"
+                         href="#one!"
+                         id="header-carousel1">
+                        <h2>some intro text</h2>
+                        <p class="white-text">some intro thangs</p>
+                    </div>
+                    <div class="carousel-item white-text"
+                         href="#two!"
+                         id="header-carousel2">
+                        <h2>who uses carousel honestly</h2>
+                        <p class="white-text">well like who puts texts inside carousel</p>
+                    </div>
+                </div>
+            </div>
+        </div>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+
+    <main>
+        <table class="striped highlight centered responsive-table" id="flowerListTable">
+            <thead>
+                <tr>
+                    <th>
+                        <label>
+                            <input id="selectAllFlowers" name="selectAllFlowers" th:id="selectAllFlowers"
+                                   type="checkbox">
+                            <span>check all</span>
+                        </label>
+                    </th>
+                    <th>item number</th>
+                    <th>title</th>
+                    <th>description</th>
+                    <th>category</th>
+                    <th>size</th>
+                    <th>shipping weight</th>
+                    <th>active</th>
+                    <th>number in stock</th>
+                    <th>list price</th>
+                    <th>our price</th>
+                    <th>delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-th-each="flower : ${flowerList}">
+                    <td>
+                        <label>
+                            <input name="id" th:value="${flower.id}" type="hidden">
+                            <input class="checkboxFlower" th:id="'selected' + ${flower.id}" type="checkbox">
+                            <span></span>
+                        </label>
+                    </td>
+                    <td th:text="${flower.id}"></td>
+                    <td th:inline="text">
+                        <a th:href="@{/flower/flowerInfo(id=${flower.id})}">
+                            <h5 th:text="${flower.title}"></h5>
+                        </a>
+                    </td>
+                    <td th:utext="${flower.description}"></td>
+                    <td th:text="${flower.category}"></td>
+                    <td th:text="${flower.size}"></td>
+                    <td th:text="${flower.shippingWeight}"></td>
+                    <td th:text="${flower.active}"></td>
+                    <td th:text="${flower.inStockNumber}"></td>
+                    <td th:inline="text">
+                        $
+                        <span th:text="${flower.listPrice}"></span>
+                    </td>
+                    <td th:inline="text">
+                        $
+                        <span th:text="${flower.ourPrice}"></span>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <input name="id" th:value="${flower.id}" type="hidden">
+                            <!-- turn this into a modal -->
+                            <button class="btn btn-small waves-effect waves-light red lighten-3 delete-flower"
+                                    th:id="'oneFlower-'+${flower.id}" type="submit"
+                                    value="delete">
+                                <span><i class="material-icons">close</i> delete</span>
+                            </button>
+
+                            <!-- materialize modal -->
+                            <!--<a class="waves-effect waves-light btn btn-small modal-trigger" href="#deleteModal">Delete-->
+                            <!--</a>-->
+                            <!--<div class="modal" id="deleteModal">-->
+                            <!--<div class="modal-content">-->
+                            <!--<h4>modal header</h4>-->
+                            <!--<p>are you sure you want to delete?</p>-->
+                            <!--</div>-->
+                            <!--<div class="modal-footer">-->
+                            <!--<input name="id" th:value="${flower.id}" type="hidden">-->
+                            <!--<a class="modal-close waves-effect waves-ripple lighten-3 btn-flat" href=#>close</a>-->
+                            <!--<a class="modal-close waves-effect waves-red lighten-3 btn-flat delete-flower"-->
+                            <!--href="#" th:id="'oneFlower-'+${flower.id}">confirm-->
+                            <!--</a>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!-- materialize modal -->
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn btn-small waves-effect waves-light red lighten-3" th:id="deleteSelected">
+            <span>delete selected</span>
+        </button>
+    </main>
+
+    <th:block th:include="/fragments/_footer"/>
+
+    </body>
+</html>

@@ -1,0 +1,81 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
+
+/* unfortunatley !important was used to override styling applied by JS */
+.dropdown-content {
+    width: 150px !important;
+    height: auto !important;
+}
+
+/* label & text input color change */
+/* label color */
+.input-field label {
+    color: #424242;
+}
+.input-field label .active {
+    color: #424242;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label {
+    color: #424242;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #f8bbd0;
+    box-shadow: 0 1px 0 0 #f8bbd0;
+}
+/* valid color */
+.input-field input[type=text].valid {
+    border-bottom: 1px solid #f8bbd0;
+    box-shadow: 0 1px 0 0 #f8bbd0;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid #ef9a9a;
+    box-shadow: 0 1px 0 0 #ef9a9a;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+    color: #f8bbd0;
+}
+
+#header-carousel1 {
+    background: url("../img/36.jpeg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+#header-carousel2 {
+    background: url("../img/42.jpeg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+#productImage {
+    width: 50%;
+}
+
+.helper-text a {
+    margin-right: 0 !important;
+}
+
+.paginate_button.active,
+.paginate_button:hover{
+    height: 100%;
+}
+
+.paginate_button:hover a {
+    height:100%;
+    color: white;
+}

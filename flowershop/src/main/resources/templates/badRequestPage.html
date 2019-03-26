@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+    <main class="container">
+        <section class="row">
+            <h1>
+                your account
+            </h1>
+            <hr>
+        </section>
+
+        <section class="row">
+            <div class="col s12 center">
+                <img alt="access-denied"
+                     class="responsive-img"
+                     src="/static/img/access-denied.jpg"
+                     style="width: 50%;"
+                     th:src="@{/img/access-denied.jpg}">
+            </div>
+            <div class="col s12">
+                <h4 class="red-text text-darken-3">Bad request, the request path is invalid. click
+                    <a th:href="@{/}">here</a>
+                    to go back to the main page
+                </h4>
+            </div>
+        </section>
+
+    </main>
+
+    <th:block th:include="/fragments/_footer"/>
+    </body>
+</html>

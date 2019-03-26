@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/_header :: common-header"></head>
+    <nav th:replace="fragments/_header :: navbar"></nav>
+    <div th:replace="fragments/_header :: carousel"></div>
+    <main class="container">
+        <section class="row">
+            <div class="col s8">
+                <h2>
+                    <span th:text="${user}? ${#strings.toUpperCase(user.username)} : 'All Flowers'"></span>
+                </h2>
+            </div>
+        </section>
+        <section class="row">
+            <form method="post"
+                  th:action="@{/checkout}">
+                <!-- left panel -->
+                <div class="col s4">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-action">
+                                    <button class="btn waves-effect waves-light waves-orange orange"
+                                            style="width: 100%;"
+                                            type="submit">
+                                        Place your order
+                                    </button>
+                                    <p class="helper-text">
+                                        by placing your order, you agree to liz's flowershop's<a href="">privacy</a>notice
+                                        and<a href="">conditions</a> of use.
+                                    </p>
+                                </div>
+                                <hr>
+                                <div class="card-content">
+                                    <h5>
+                                        order summary
+                                    </h5>
+                                    <div class="row">
+                                        <p class="col s7 left-align">total before tax: </p>
+                                        <p class=" col s5 right-align">
+                                            $
+                                            <span th:text="${shoppingCart.grandTotal}"></span>
+                                        </p>
+                                    </div>
+                                    <div class="row">
+                                        <p class="col s7 left-align">estimated tax: </p>
+                                        <p class="col s5 right-align">
+                                            $
+                                            <span th:text="${#numbers.formatDecimal(tax, 0, 2)}"
+                                                  th:with="tax=${shoppingCart.grandTotal*0.08}"></span>
+                                        </p>
+                                    </div>
+                                    <div class="row valign-wrapper">
+                                        <h5 class="col s7 left-align">order total: </h5>
+                                        <p class="col s5 right-align">$
+                                            <span th:text="${#numbers.formatDecimal(total, 0, 2)}"
+                                                  th:with="total=${shoppingCart.grandTotal+shoppingCart.grandTotal*0.08}"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="card-content">
+                                    shipping and handling haven't been applied yet.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- right panel (checkout info) -->
+                <div class="col s8">
+                    <ul class="collapsible expandable">
+                        <li th:if="${missingRequiredField}">
+                            <h5 class="red-text text-lighten-3">There are some fields missing. Fields with * are
+                                required.</h5>
+                        </li>
+                        <!-- 1. shipping address -->
+                        <li class="active">
+                            <div class="collapsible-header">
+                                <i class="material-icons">filter_drama</i>1. shipping address
+                            </div>
+                            <div class="collapsible-body"
+                                 th:classappend="${classActiveShipping}? 'in'">
+                                <table class="table"
+                                       th:if="${not emptyShippingList}">
+                                    <thead>
+                                        <tr>
+                                            <th>Available Shipping Addresses</th>
+                                            <th>Operations</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="userShipping : ${userShippingList}">
+                                            <td th:text="${userShipping.userShippingStreet1}+', '+${userShipping.userShippingStreet2}+', '+${userShipping.userShippingCity}+', '+${userShipping.userShippingState}"></td>
+                                            <td>
+                                                <a th:href="@{/setShippingAddress(userShippingId=${userShipping.id})}">use
+                                                    this address</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="input-field">
+                                        <input id="shippingName"
+                                               name="shippingName"
+                                               th:value="${shippingAddress.shippingName}"
+                                               type="text">
+                                        <label for="shippingName">* name</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="shippingStreet1"
+                                               name="shippingStreet1"
+                                               th:value="${shippingAddress.shippingStreet1}"
+                                               type="text">
+                                        <label for="shippingStreet1">* address 1</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="shippingStreet2"
+                                               name="shippingStreet2"
+                                               th:value="${shippingAddress.shippingStreet2}"
+                                               type="text">
+                                        <label for="shippingStreet2">* address 2</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s4">
+                                        <div class="input-field">
+                                            <input id="shippingCity"
+                                                   name="shippingCity"
+                                                   required
+                                                   th:name="shippingCity"
+                                                   th:value="${shippingAddress.shippingCity}"
+                                                   type="text">
+                                            <label for="shippingCity">* city</label>
+                                        </div>
+                                    </div>
+                                    <div class="col s4">
+                                        <div class="input-field">
+                                            <select id="shippingState"
+                                                    name="shippingState"
+                                                    required
+                                                    th:name="shippingState"
+                                                    th:value="${shippingAddress.shippingState}">
+                                                <option disabled="disabled"
+                                                        th:selected="true">please select an
+                                                    option
+                                                </option>
+                                                <option th:each="state : ${stateList}"
+                                                        th:selected="(${shippingAddress.shippingState}==${state})"
+                                                        th:text="${state}"></option>
+                                            </select>
+                                            <label for="shippingState">* shipping state</label>
+                                        </div>
+                                    </div>
+                                    <div class="col s4">
+                                        <div class="input-field">
+                                            <input id="shippingZipcode"
+                                                   name="shippingZipcode"
+                                                   required
+                                                   th:name="shippingZipcode"
+                                                   th:value="${shippingAddress.shippingZipcode}"
+                                                   type="text">
+                                            <label for="shippingZipcode">* zipcode</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- payment information -->
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">credit_card</i>2. payment
+                                information
+                            </div>
+                            <div class="collapsible-body"
+                                 th:classappend="${classActivePayment}? 'in'">
+                                <table class="table"
+                                       th:if="${not emptyPaymentList}">
+                                    <thead>
+                                        <tr>
+                                            <th>Available Credit Card</th>
+                                            <th>Operations</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="userPayment : ${userPaymentList}">
+                                            <td th:text="${userPayment.cardName}"></td>
+                                            <td>
+                                                <a th:href="@{/setPaymentMethod(userPaymentId=${userPayment.id})}">use
+                                                    this payment method</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!--credit card information-->
+                                <div class="row">
+                                    <div class="col s12">
+                                        <img alt="credit card"
+                                             class="responsive-img"
+                                             src="../static/img/creditcard.png"
+                                             style="width: 100%;"
+                                             th:src="@{/img/creditcard.png}">
+                                        <div class="input-field">
+                                            <select id="cardType"
+                                                    name="type"
+                                                    th:name="type"
+                                                    th:selected="${payment.type}"
+                                                    th:value="${payment.type}">
+                                                <option disabled>please select an option</option>
+                                                <option value="visa">Visa</option>
+                                                <option value="mastercard">mastercard</option>
+                                                <option value="discover">discover</option>
+                                                <option value="amex">American Express</option>
+                                            </select>
+                                            <label for="cardType">* select card type:</label>
+                                        </div>
+                                        <div class="input-field">
+                                            <input id="holderName"
+                                                   name="cardHolderName"
+                                                   th:name="cardHolderName"
+                                                   th:value="${payment.cardHolderName}"
+                                                   type="text">
+                                            <label for="holderName">* card holder name: </label>
+                                        </div>
+                                        <div class="input-field">
+                                            <div class="input-field">
+                                                <input id="cardNumber"
+                                                       th:name="cardNumber"
+                                                       th:value="${payment.cardNumber}"
+                                                       type="tel">
+                                                <!--<span><i class="material-icons">credit card</i></span>-->
+                                                <label for="cardNumber">* card Number:</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="input-field">
+                                            <div class="row">
+                                                <div class="col s4 input-field">
+                                                    <select id="expiryMonth"
+                                                            name="expiryMonth"
+                                                            required
+                                                            th:selected="${payment.expiryMonth}"
+                                                            th:value="${payment.expiryMonth}">
+                                                        <option disabled="disabled"
+                                                                th:selected="false">-- month --
+                                                        </option>
+                                                        <option value="01">Jan (01)</option>
+                                                        <option value="02">Feb (02)</option>
+                                                        <option value="03">Mar (03)</option>
+                                                        <option value="04">Apr (04)</option>
+                                                        <option value="05">May (05)</option>
+                                                        <option value="06">June (06)</option>
+                                                        <option value="07">July (07)</option>
+                                                        <option value="08">Aug (08)</option>
+                                                        <option value="09">Sep (09)</option>
+                                                        <option value="10">Oct (10)</option>
+                                                        <option value="11">Nov (11)</option>
+                                                        <option value="12">Dec (12)</option>
+                                                    </select>
+                                                    <label for="expiryMonth">* expiration date</label>
+                                                </div>
+                                                <div class="col s4 input-field">
+                                                    <select id="expiryYear"
+                                                            name="expiryYear"
+                                                            required
+                                                            th:selected="${payment.expiryYear}"
+                                                            th:value="${payment.expiryYear}">
+                                                        <option disabled>
+                                                            -- year --
+                                                        </option>
+                                                        <option value="2019">2019</option>
+                                                        <option value="2020">2020</option>
+                                                        <option value="2021">2021</option>
+                                                        <option value="2022">2022</option>
+                                                        <option value="2023">2023</option>
+                                                        <option value="2024">2024</option>
+                                                        <option value="2025">2025</option>
+                                                        <option value="2026">2026</option>
+                                                        <option value="2027">2027</option>
+                                                        <option value="2028">2028</option>
+                                                        <option value="2029">2029</option>
+                                                        <option value="2030">2030</option>
+                                                    </select>
+                                                    <label for="expiryYear">* expiration year</label>
+                                                </div>
+                                                <div class="col s4">
+                                                    <div class="input-field">
+                                                        <input id="cardCVC"
+                                                               name="cvc"
+                                                               th:name="cvc"
+                                                               th:value="${payment.cvc}"
+                                                               type="tel">
+                                                        <label for="cardCVC">CV Code</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- billing address -->
+                                        <div class="input-field">
+                                            <p>
+                                                <label>
+                                                    <input id="theSameAsShippingAddress"
+                                                           name="billingSameAsShipping"
+                                                           type="checkbox"
+                                                           value="true">
+                                                    <span>the same as shipping address</span>
+                                                </label>
+                                            </p>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input class="billingAddress"
+                                                   id="billingName"
+                                                   required
+                                                   th:name="billingAddressName"
+                                                   th:value="${billingAddress.billingName}"
+                                                   type="text">
+                                            <label for="billingName">* name</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input class="billingAddress"
+                                                   id="billingStreet1"
+                                                   required
+                                                   th:name="billingAddressStreet1"
+                                                   th:value="${billingAddress.billingStreet1}"
+                                                   type="text">
+                                            <label for="billingStreet1">* street address</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input class="billingAddress"
+                                                   id="billingStreet2"
+                                                   required
+                                                   th:name="billingAddressStreet2"
+                                                   th:value="${billingAddress.billingStreet2}"
+                                                   type="text">
+                                            <label for="billingStreet2">* street address2</label>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="input-field col s4">
+                                                <input class="billingAddress"
+                                                       id="billingCity"
+                                                       required
+                                                       th:name="billingAddressCity"
+                                                       th:value="${billingAddress.billingCity}"
+                                                       type="text">
+                                                <label for="billingCity">user billing city</label>
+                                            </div>
+                                            <div class="input-field col s4 billingState">
+                                                <select class="billingAddress"
+                                                        id="billingState"
+                                                        required
+                                                        th:name="billingAddressState"
+                                                        th:value="${billingAddress.billingState}">
+                                                    <option disabled="disabled"
+                                                            th:selected="true">please select an
+                                                        option
+                                                    </option>
+                                                    <option class="billingAddress"
+                                                            th:each="state : ${stateList}"
+                                                            th:selected="(${billingAddress.billingState} == ${state})"
+                                                            th:text="${state}"></option>
+                                                </select>
+                                                <label for="billingState">user billing state</label>
+                                            </div>
+                                            <div class="input-field col s4">
+                                                <input class="billingAddress"
+                                                       id="billingZipcode"
+                                                       required
+                                                       th:name="billingAddressZipcode"
+                                                       th:value="${billingAddress.billingZipcode}"
+                                                       type="text">
+                                                <label for="billingZipcode">zipcode</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- review items and shipping -->
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">local_airport</i>3. review
+                                items
+                                and shipping
+                            </div>
+                            <div class="collapsible-body">
+                                <h4>
+                                    choose your shipping method
+                                </h4>
+                                <div class="radio row">
+                                    <div>
+                                        <label class="left">
+                                            <input checked
+                                                   name="shippingMethod"
+                                                   type="radio"
+                                                   value="groundShipping">
+                                            <span>ground shipping</span>
+                                        </label>
+                                        <label class="right">
+                                            <input id="premiumShipping"
+                                                   name="shippingMethod"
+                                                   type="radio"
+                                                   value="premiumShipping">
+                                            <span>premium shipping</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s8">products</div>
+                                    <div class="col s2">price</div>
+                                    <div class="col s2">quantity</div>
+                                </div>
+                                <!-- display products in cart -->
+                                <div class="row valign-wrapper"
+                                     th:each="cartItem : ${cartItemList}">
+                                    <div class="col s2">
+                                        <a th:href="@{/flowerDetail(id=${cartItem.flower.id})}">
+                                            <img alt="product image"
+                                                 class="responsive-img"
+                                                 style="width: 100%;"
+                                                 th:src="#{adminPath}+@{/img/flower/}+${cartItem.flower.id}+'.jpeg'">
+                                        </a>
+                                    </div>
+                                    <div class="col s6">
+                                        <div>
+                                            <a th:href="@{/flowerDetail?id=}+${cartItem.flower.id}">
+                                                <h4 th:text="${cartItem.flower.title}"></h4>
+                                            </a>
+                                            <p class="helper-text green-text text-lighten-3"
+                                               th:if="${cartItem.flower.inStockNumber >= 10}">
+                                                in stock
+                                            </p>
+                                            <p class="helper-text pink-text text-lighten-3"
+                                               th:if="${cartItem.flower.inStockNumber&lt;10 and cartItem.flower.inStockNumber&gt;0}">
+                                                only
+                                                <span th:text="${cartItem.flower.inStockNumber}"></span>
+                                                left
+                                            </p>
+                                            <p class="helper-text red-text text-lighten-3"
+                                               th:if="${cartItem.flower.inStockNumber == 0}">
+                                                product unavailable
+                                            </p>
+                                            <a class="red-text text-lighten-3"
+                                               th:href="@{/shoppingCart/removeItem?id=}+${cartItem.id}">delete</a>
+                                        </div>
+                                    </div>
+                                    <div class="col s2">
+                                        <h5>
+                                            $
+                                            <span th:style="${cartItem.flower.inStockNumber}==0? 'text-decoration: line-through' : ''"
+                                                  th:text="${cartItem.flower.ourPrice}"></span>
+                                        </h5>
+                                    </div>
+                                    <div class="col s2 center">
+                                        <h5 th:text="${cartItem.qty}"></h5>
+                                    </div>
+                                </div>
+                                <h4 class="col s12 ">
+                                    order total (
+                                    <span th:text="${#lists.size(cartItemList)}"></span>
+                                    items):
+                                    <span>$<span th:text="${shoppingCart.grandTotal}"></span></span>
+                                </h4>
+                                <div class="row col s12 right-align">
+                                    <button class="btn waves-light waves-effect waves-orange orange"
+                                            type="submit">
+                                        Place order
+                                    </button>
+                                </div>
+                                <p class="helper-text">
+                                    by placing your order, you agree to liz's flowershop's <a href="">privacy</a>
+                                    notice and
+                                    <a href="">conditions</a> of use.
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <th:block th:include="/fragments/_footer"/>
+    </body>
+</html>
